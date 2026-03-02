@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Test PWA</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    body {
+      font-family: system-ui;
+      text-align: center;
+      margin-top: 40vh;
+    }
+
+    button {
+      font-size: 20px;
+      padding: 15px 25px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Meine Offline-PWA</h1>
+
+<button onclick="clicked()">Klick mich</button>
+
+<p id="out"></p>
+
+<script>
+function clicked() {
+  document.getElementById("out").textContent =
+    "Button funktioniert 🎉";
+}
+
+// Service Worker registrieren
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
+</script>
+
+</body>
+</html>
