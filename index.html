@@ -12,8 +12,10 @@
 <body>
 
 <button onclick="update_app()" id="update-btn">Update</button>
-<h2>Check In Time</h2><input type="datetime-local" placeholder="DD.MM.JJJJ HH:MM">UTC
-<h2>Number of legs flown</h2><input type="number">Legs
+<h2>Check In Time</h2><input id="check-in-datetime" type="datetime-local" placeholder="DD.MM.JJJJ HH:MM"><span>UTC</span>
+<h2>Number of legs flown</h2><input id="leg-count" type="number"><span>Legs</span>
+
+<button onclick="calculate_final_data()">Calculate</button>
 
 <script src="index.js"></script>
 
