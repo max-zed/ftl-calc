@@ -11,31 +11,24 @@ const CACHE_NAME = "ftl-calc"
 
 // Install Event: Cache erstellen
 self.addEventListener("install", event => {
-  console.log("install")
+  console.log("SW Install...")
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys.map(key => caches.delete(key)) // alle alten Caches löschen
-      )
-    ).then(() =>
-      caches.open("ftl-calc").then(cache => cache.addAll(FILES_TO_CACHE))
-    ).then(() => self.skipWaiting())
+    caches.open(CACHE_NAME).then(cache => cache.addAll(FILES_TO_CACHE))
+      .then(() => self.skipWaiting()) // SW sofort aktivieren
   );
 });
 
-// Activate Event: Alte Caches löschen
 self.addEventListener("activate", event => {
-  console.log("[SW] Aktivieren...");
+  console.log("SW Activate...")
   event.waitUntil(
     caches.keys().then(keys =>
       Promise.all(
-        keys
-          .filter(key => key !== CACHE_NAME)
-          .map(key => caches.delete(key))
+        keys.filter(key => key !== CACHE_NAME)
+            .map(key => caches.delete(key))
       )
     )
   );
-  self.clients.claim();
+  self.clients.claim(); // alle Seiten sofort auf neuen SW umstellen
 });
 
 // Fetch Event: offlinefähig + Update automatisch
