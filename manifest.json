@@ -1,5 +1,5 @@
 {
-  "name": "Test PWA",
+  "name": "FTL Calculator",
   "short_name": "Test",
   "start_url": "./",
   "display": "standalone",
