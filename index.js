@@ -3,8 +3,9 @@ if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("service-worker.js");
 }
 
+
 function update_app() {
-    //location.reload(true);
+    location.reload(true);
 }
 
 const updateBtn = document.getElementById("update-btn");

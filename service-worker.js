@@ -12,41 +12,36 @@ const CACHE_NAME = "ftl-calc"
 // Install Event: Cache erstellen
 self.addEventListener("install", event => {
   console.log("SW Install...")
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(FILES_TO_CACHE))
-      .then(() => self.skipWaiting()) // SW sofort aktivieren
-  );
+  
 });
 
 self.addEventListener("activate", event => {
   console.log("SW Activate...")
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys.filter(key => key !== CACHE_NAME)
-            .map(key => caches.delete(key))
-      )
-    )
-  );
-  self.clients.claim(); // alle Seiten sofort auf neuen SW umstellen
+  event.waitUntil((async () => {
+    // Alle Caches löschen
+    const keys = await caches.keys();
+    await Promise.all(keys.map(key => caches.delete(key)));
+
+    // Neue Dateien cachen
+    const cache = await caches.open(CACHE_NAME);
+    await cache.addAll(FILES_TO_CACHE);
+
+    await self.clients.claim();
+  })());
 });
 
 // Fetch Event: offlinefähig + Update automatisch
 self.addEventListener("fetch", event => {
   event.respondWith(
     caches.match(event.request).then(cachedResponse => {
-      // Wenn gefunden, zurückgeben
-      if (cachedResponse) {
-        // Parallel: Cache im Hintergrund aktualisieren
-        fetch(event.request).then(response => {
-          if(response && response.status === 200) {
-            caches.open(CACHE_NAME).then(cache => cache.put(event.request, response.clone()));
-          }
-        });
-        return cachedResponse;
-      }
-      // Sonst normal fetch
-      return fetch(event.request);
+      const fetchPromise = fetch(event.request).then(networkResponse => {
+        if(networkResponse && networkResponse.status === 200) {
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, networkResponse.clone()));
+        }
+        return networkResponse;
+      });
+
+      return cachedResponse || fetchPromise;
     })
   );
 });
