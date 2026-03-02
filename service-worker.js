@@ -7,17 +7,18 @@ const FILES_TO_CACHE = [
   "./manifest.json"
 ];
 
-const CACHE_NAME = "rechner-cache-" + FILES_TO_CACHE.join(",").length;
+const CACHE_NAME = "ftl-calc"
 
 // Install Event: Cache erstellen
 self.addEventListener("install", event => {
+  console.log("install")
   event.waitUntil(
     caches.keys().then(keys =>
       Promise.all(
         keys.map(key => caches.delete(key)) // alle alten Caches löschen
       )
     ).then(() =>
-      caches.open("rechner-cache").then(cache => cache.addAll(FILES_TO_CACHE))
+      caches.open("ftl-calc").then(cache => cache.addAll(FILES_TO_CACHE))
     ).then(() => self.skipWaiting())
   );
 });
