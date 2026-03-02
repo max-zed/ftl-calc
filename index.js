@@ -37,10 +37,21 @@ updateBtn.addEventListener("click", async () => {
 
 
 const checkInTimeElement = document.getElementById("check-in-datetime")
+const legsElement = document.getElementById("leg-count")
+const latestOnBlockElement = document.getElementById("on-block-time")
 
 function calculate_final_data() {
     var checkInTime = new Date(checkInTimeElement.value + "Z")
+    checkInTime.setHours(checkInTime.getHours() + 13) //Set maximum fdp time
     var latestOnBlock = checkInTime
+
+    var legCount = legsElement.value
+    if (legCount >= 3) {
+        for (let i = 0; i < legCount - 2; i++){
+            latestOnBlock.setMinutes(latestOnBlock.getMinutes() - 30)
+        }
+    }
+    
 
     
     const year = latestOnBlock.getUTCFullYear();
@@ -51,4 +62,5 @@ function calculate_final_data() {
     
 
     console.log("Latest On-Block: "+day+"."+month+"."+year+" at "+hours+":"+minutes+" UTC")
+    latestOnBlockElement.textContent = `${day}.${month}.${year} at ${hours}:${minutes} UTC`
 }
