@@ -1,3 +1,4 @@
+/*
 const CACHE = "test-pwa-v1";
 
 self.addEventListener("install", event => {
@@ -19,3 +20,4 @@ self.addEventListener("fetch", event => {
     })
   );
 });
+*/
