@@ -4,12 +4,17 @@
   <meta charset="UTF-8">
   <title>Test PWA</title>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
 
   <link rel="manifest" href="manifest.json">
 
   <style>
+    * {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+
     body {
       font-family: system-ui;
       text-align: center;
@@ -19,6 +24,8 @@
     button {
       font-size: 20px;
       padding: 15px 25px;
+      appearance: none;
+      -webkit-appearance: none;
     }
   </style>
 </head>
@@ -27,11 +34,22 @@
 
 <h1>Meine Offline-PWA</h1>
 
-<button onclick="clicked()">Klick mich nicht</button>
+<button id="btn">Klick mich</button>
 
 <p id="out"></p>
 
 <script>
+    const btn = document.getElementById("btn");
+
+btn.addEventListener("touchstart", () => {
+  btn.classList.add("pressed");
+}, { passive: true });
+
+btn.addEventListener("touchend", () => {
+  btn.classList.remove("pressed");
+  clicked();
+});
+
 function clicked() {
   document.getElementById("out").textContent =
     "Button funktioniert 🎉";
