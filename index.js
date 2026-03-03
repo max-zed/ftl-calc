@@ -42,7 +42,7 @@ const timeZoneElement = document.getElementById("time-zone-select")
 const legsElement = document.getElementById("leg-count")
 const latestOnBlockElement = document.getElementById("on-block-time")
 
-checkInTimeZoneElement.addEventListener("click", function () {
+checkInTimeZoneElement.addEventListener("change", function () {
     if (checkInTimeZoneElement.value == "local") {
         document.getElementById("time-zone-label").style.visibility = "visible"
         document.getElementById("time-zone-select").style.visibility = "visible"
